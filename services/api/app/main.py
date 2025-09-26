@@ -17,7 +17,7 @@ PROBE_FAILURE = Counter(
 )
 
 PROBE_LATENCY = Gauge(
-    "probe_slatency_ms",
+    "probe_latency_ms",
     "Latency of last probe in milliseconds"
 )
 

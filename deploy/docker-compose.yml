@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  api:
+    build: ./monitorig/services/api/app
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - prometheus
+    command: ["uvicorn", app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+  
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./monitorig/deploy/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    
+  grafana:
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitorig/deploy/grafana:/etc/grafana/provisioning
+
+    
