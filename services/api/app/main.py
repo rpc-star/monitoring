@@ -3,7 +3,6 @@ import httpx
 from fastapi import FastAPI, Response, Request
 from prometheus_client import Counter, Gauge, generate_latest
 
-
 app = FastAPI()
 
 PROBE_SUCCESS = Counter(
@@ -48,4 +47,4 @@ def probe(url: str = "https://localhost", expected_code: int = 200):
 
     except Exception as e:
         PROBE_FAILURE.inc()
-        return {"success": True, "error": str(e)}
+        return {"success": False, "error": str(e)}
