@@ -1,9 +1,17 @@
 import time
 import httpx
+import logging
 from fastapi import FastAPI, Response, Request
 from prometheus_client import Counter, Gauge, generate_latest
+from services.api.app.scheduler import create_scheduler
+from contextlib import asynccontextmanager
 
-app = FastAPI()
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 
 PROBE_SUCCESS = Counter(
     "probe_success_total",
@@ -19,6 +27,22 @@ PROBE_LATENCY = Gauge(
     "probe_latency_ms",
     "Latency of last probe in milliseconds"
 )
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    scheduler = create_scheduler()
+    scheduler.start()
+    logger.info("APScheduler started")
+    app.state.scheduler = scheduler
+    yield
+    scheduler.shutdown()
+    logger.info("APScheduler stopped")
+
+
+app = FastAPI(lifespan=lifespan)
+
+
 
 @app.get("/healthz")
 def healthz():
