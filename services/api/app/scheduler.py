@@ -7,14 +7,14 @@ from datetime import datetime, timezone
 logger = logging.getLogger(__name__)
 
 TARGETS = [
-    {"url": "https://localhost.com", "expected_code": 200}
+    {"url": "https://localhost.com", "expected_code": 200},
     {"url": "https://rpc-star.com", "expected_code": 200}
 ]
 
 async def probe_targets(target):
     """async check targets"""
     url = target["url"]
-    expected_code = target.get("expected_code": 200)
+    expected_code = target.get("expected_code", 200)
     start_time = datetime.now(timezone.utc)
     try:
         async with httpx.AsyncClient(timeout=5.0) as client:
