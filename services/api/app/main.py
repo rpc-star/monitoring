@@ -3,7 +3,7 @@ import httpx
 import logging
 from fastapi import FastAPI, Response, Request
 from prometheus_client import Counter, Gauge, generate_latest
-from services.api.app.scheduler import create_scheduler
+from scheduler import create_scheduler
 from contextlib import asynccontextmanager
 
 

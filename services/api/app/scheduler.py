@@ -43,7 +43,7 @@ def create_scheduler():
     scheduler = AsyncIOScheduler(timezone="UTC")
     scheduler.add_job(
         run_periodic_probes,
-        trigger=IntervalTrigger(minute=5),
+        trigger=IntervalTrigger(minutes=5),
         id="probe_targets",
         name="Probe monitoring targets",
         replace_existing=True,
