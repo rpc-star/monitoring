@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 logger = logging.getLogger(__name__)
 
 TARGETS = [
-    {"url": "https://localhost.com", "expected_code": 200},
+    {"url": "https://sqlitebrowser.org/", "expected_code": 200},
     {"url": "https://rpc-star.com", "expected_code": 200}
 ]
 

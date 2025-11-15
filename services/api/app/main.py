@@ -62,7 +62,7 @@ def metrics():
 
 @app.get("/probe")
 async def probe(
-    url: str = "https://localhost", 
+    url: str = "https://sqlitebrowser.org/", 
     expected_code: int = 200,
     session: AsyncSession = Depends(get_session)
     ):
@@ -74,12 +74,14 @@ async def probe(
 
         PROBE_LATENCY.set(latency_ms)
 
-        if resp.status_code == expected_code:
+        success = resp.status_code == expected_code
+
+        if success:
             PROBE_SUCCESS.inc()
-            return {"success": True, "latency_ms": latency_ms, "status_code": resp.status_code}
+        
         else:
             PROBE_FAILURE.inc()
-            return {"success": False, "latency_ms": latency_ms, "status_code": resp.status_code}
+
         db_record = Result(
             url=url,
             status_code=resp.status_code,
@@ -87,7 +89,6 @@ async def probe(
             success=success,
             error=None
         )
-
     except Exception as e:
         PROBE_FAILURE.inc()
         db_record = Result(
