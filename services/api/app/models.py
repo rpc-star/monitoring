@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
 from datetime import datetime, timezone
-from services.api.app.db import Base
+from db import Base
 
 
 class Result(Base):
